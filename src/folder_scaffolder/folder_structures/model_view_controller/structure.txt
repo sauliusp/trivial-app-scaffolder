@@ -1,0 +1,19 @@
+├── src/
+│   ├── models/
+│   │   ├── userModel.ts
+│   │   ├── postModel.ts
+│   │   └── commentModel.ts
+│   ├── views/
+│   │   ├── userViews.ts
+│   │   ├── postViews.ts
+│   │   └── commentViews.ts
+│   ├── controllers/
+│   │   ├── userController.ts
+│   │   ├── postController.ts
+│   │   └── commentController.ts
+├── public/
+│   ├── assets/
+│   │   ├── images/
+│   │   ├── css/
+│   │   └── js/
+└── package.json

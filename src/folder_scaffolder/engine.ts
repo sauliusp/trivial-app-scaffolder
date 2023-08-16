@@ -2,18 +2,11 @@ import { createReadStream, createWriteStream } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { join, extname } from "path";
 import split2 from "split2";
-import { ProjectType } from "../types/ProjectType";
 import { Transform } from "stream";
 
-interface SanitizedInput {
-    depth: number;
-    path: string
-}
-
-interface FsOperation {
-    type: 'file' | 'directory';
-    path: string;
-}
+import { ProjectType } from "../types/ProjectType";
+import { FsOperation } from "../types/FsOperation";
+import { SanitizedInput } from "../types/SanitizedInput";
 
 class ScaffolderEngine {
     private currentPathSegments: string[] = [];

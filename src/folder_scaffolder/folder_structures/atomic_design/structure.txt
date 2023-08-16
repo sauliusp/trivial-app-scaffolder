@@ -1,0 +1,19 @@
+├── src/
+│   ├── atoms/
+│   │   ├── button.ts
+│   │   ├── input.ts
+│   │   └── icon.ts
+│   ├── molecules/
+│   │   ├── form.ts
+│   │   ├── header.ts
+│   │   └── card.ts
+│   ├── organisms/
+│   │   ├── userForm.ts
+│   │   ├── postCard.ts
+│   ├── templates/
+│   │   ├── mainLayout.ts
+│   │   ├── adminLayout.ts
+│   ├── pages/
+│   │   ├── home.ts
+│   │   ├── admin.ts
+└── package.json

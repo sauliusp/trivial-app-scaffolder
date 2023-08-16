@@ -1,0 +1,45 @@
+.
+├── package.json
+├── tsconfig.json
+├── README.md
+├── .gitignore
+├── .prettierrc
+├── src/
+│   ├── bin/
+│   │   └── start.ts
+│   ├── user/
+│   │   ├── userController.ts
+│   │   ├── userModel.ts
+│   │   ├── userRoutes.ts
+│   │   ├── userService.ts
+│   │   └── userTest.ts
+│   ├── post/
+│   │   ├── postController.ts
+│   │   ├── postModel.ts
+│   │   ├── postRoutes.ts
+│   │   ├── postService.ts
+│   │   └── postTest.ts
+│   ├── comment/
+│   │   ├── commentController.ts
+│   │   ├── commentModel.ts
+│   │   ├── commentRoutes.ts
+│   │   ├── commentService.ts
+│   │   └── commentTest.ts
+│   ├── auth/
+│   │   ├── authService.ts
+│   │   ├── authMiddleware.ts
+│   │   └── authRoutes.ts
+│   ├── config/
+│   │   ├── dbConfig.ts
+│   │   └── appConfig.ts
+│   ├── lib/
+│   │   ├── helper.ts
+│   │   └── validators.ts
+│   ├── types/
+│   │   └── customTypes.ts
+│   └── index.ts
+└── public/
+    ├── images/
+    │   └── logo.png
+    └── styles/
+        └── main.css

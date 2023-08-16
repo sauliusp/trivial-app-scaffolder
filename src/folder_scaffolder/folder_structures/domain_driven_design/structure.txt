@@ -1,0 +1,23 @@
+├── src/
+│   ├── user/
+│   │   ├── services/
+│   │   │   ├── userCreator.ts
+│   │   │   └── userProfileUpdater.ts
+│   │   ├── models/
+│   │   │   ├── userModel.ts
+│   │   │   └── userAggregate.ts
+│   │   ├── dtos/
+│   │   │   ├── createUserDTO.ts
+│   │   │   └── updateUserDTO.ts
+│   ├── order/
+│   │   ├── services/
+│   │   ├── models/
+│   │   └── dtos/
+│   ├── inventory/
+│   │   ├── services/
+│   │   ├── models/
+│   │   └── dtos/
+├── tests/
+│   ├── user/
+│   ├── order/
+└── package.json

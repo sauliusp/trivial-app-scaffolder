@@ -1,0 +1,22 @@
+├── src/
+│   ├── data/
+│   │   ├── repositories/
+│   │   │   ├── userRepository.ts
+│   │   │   └── postRepository.ts
+│   │   ├── mappers/
+│   │   │   ├── userMapper.ts
+│   │   │   └── postMapper.ts
+│   ├── presentation/
+│   │   ├── routes/
+│   │   │   ├── userRoutes.ts
+│   │   │   └── postRoutes.ts
+│   │   ├── middlewares/
+│   │   │   ├── errorMiddleware.ts
+│   │   │   └── authMiddleware.ts
+│   ├── domain/
+│   │   ├── user/
+│   │   │   ├── userModel.ts
+│   │   │   ├── userValidator.ts
+│   │   ├── post/
+│   │   │   ├── postModel.ts
+└── package.json
