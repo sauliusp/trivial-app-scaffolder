@@ -1,39 +1,33 @@
-import { createReadStream, createWriteStream } from "fs";
+import { createReadStream } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { join, extname } from "path";
 import split2 from "split2";
 import { Transform } from "stream";
 
-import { ProjectType } from "../types/ProjectType";
-import { FsOperation } from "../types/FsOperation";
-import { SanitizedInput } from "../types/SanitizedInput";
+import { FsOperation } from "../types/FsOperation.js";
+import { SanitizedInput } from "../types/SanitizedInput.js";
+import { DirectoryStructureConfig } from "../types/DirectoryStructureConfig.js";
 
-class ScaffolderEngine {
+export class ScaffolderEngine {
     private currentPathSegments: string[] = [];
 
     private fsOperationQueue: FsOperation[] = [];
 
-    constructor(private projectType: ProjectType, private projectDestination: string) {}
+    constructor(private structurePath: DirectoryStructureConfig['path'], private projectDestination: string) {}
 
-    get projectStructureSource(): Record<ProjectType, string> {
-        return {
-            [ProjectType.GoogleTypescriptNode]: join(__dirname, '..', 'structures', 'google_typescript_node.txt'),
-        }
-    }
-
-    get currentDepth(): number {
+    private get currentDepth(): number {
         return this.currentPathSegments.length;
     }
 
-    get writeDestination(): string {
+    private get writeDestination(): string {
         return join(this.projectDestination, ...this.currentPathSegments);
     }
 
-    get readStream(): NodeJS.ReadableStream {
-        return createReadStream(this.projectStructureSource[this.projectType], "utf-8");
+    private get readStream(): NodeJS.ReadableStream {
+        return createReadStream(this.structurePath, "utf-8");
     }
 
-    get splitStream(): Transform {
+    private get splitStream(): Transform {
         const stream = split2();
 
         stream.on('error', this.onSplitStreamError);
@@ -43,7 +37,7 @@ class ScaffolderEngine {
         return stream;
     }
 
-    sanitizeInput(input: string): SanitizedInput {
+    private sanitizeInput(input: string): SanitizedInput {
         const splitted = input.trim().split('  ');
 
         const path = (splitted.pop() as string).replace(/[^a-zA-Z0-9_/.-]/g, '')
@@ -54,15 +48,15 @@ class ScaffolderEngine {
         }
     }
 
-    isFile(path: string) {
+    private isFile(path: string) {
         return !!extname(path);
     }
 
-    onSplitStreamError(error: Error) {
+    private onSplitStreamError(error: Error) {
         console.error('\n SPLIT-STREAM-ERROR \n', error + '\n');
     }
 
-    onSplitStreamData = async (input: string) => {
+    private onSplitStreamData = async (input: string) => {
         const sanitizedInput: SanitizedInput = this.sanitizeInput(input);
 
         this.currentPathSegments = this.currentPathSegments.slice(0, sanitizedInput.depth);
@@ -74,7 +68,7 @@ class ScaffolderEngine {
         });
     }
 
-    executeFsOperations = async (operations: FsOperation[]) => {
+    private executeFsOperations = async (operations: FsOperation[]) => {
         for (let operation of operations) {
             if (operation.type === 'directory') {
                 await this.createDirectory(operation.path);
@@ -84,7 +78,7 @@ class ScaffolderEngine {
         }
     }
 
-    createDirectory = async (destination: string) => {
+    private createDirectory = async (destination: string) => {
         try {
             await mkdir(destination, { recursive: true });
         } catch (error) {
@@ -92,7 +86,7 @@ class ScaffolderEngine {
         }
     }
 
-    createFile = async (destination: string) => {
+    private createFile = async (destination: string) => {
         try {
             await writeFile(destination, '');
         } catch (error) {
@@ -100,7 +94,7 @@ class ScaffolderEngine {
         }
     }
 
-    public run() {
+    run() {
         const stream = this.readStream.pipe(this.splitStream)
 
         stream.on('close', () => {
@@ -108,7 +102,3 @@ class ScaffolderEngine {
         })
     }
 }
-
-const engine = new ScaffolderEngine(ProjectType.GoogleTypescriptNode, join(__dirname, 'my-new-project'))
-
-engine.run();

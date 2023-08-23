@@ -9,46 +9,13 @@ const path_1 = require("path");
 const split2_1 = __importDefault(require("split2"));
 const ProjectType_1 = require("../types/ProjectType");
 class ScaffolderEngine {
+    projectType;
+    projectDestination;
+    currentPathSegments = [];
+    fsOperationQueue = [];
     constructor(projectType, projectDestination) {
         this.projectType = projectType;
         this.projectDestination = projectDestination;
-        this.currentPathSegments = [];
-        this.fsOperationQueue = [];
-        this.onSplitStreamData = async (input) => {
-            const sanitizedInput = this.sanitizeInput(input);
-            this.currentPathSegments = this.currentPathSegments.slice(0, sanitizedInput.depth);
-            this.currentPathSegments.push(sanitizedInput.path);
-            this.fsOperationQueue.push({
-                type: this.isFile(sanitizedInput.path) ? 'file' : 'directory',
-                path: this.writeDestination
-            });
-        };
-        this.executeFsOperations = async (operations) => {
-            for (let operation of operations) {
-                if (operation.type === 'directory') {
-                    await this.createDirectory(operation.path);
-                }
-                else {
-                    await this.createFile(operation.path);
-                }
-            }
-        };
-        this.createDirectory = async (destination) => {
-            try {
-                await (0, promises_1.mkdir)(destination, { recursive: true });
-            }
-            catch (error) {
-                console.error('\n CREATE-DIRECTORY-ERROR \n', error + '\n');
-            }
-        };
-        this.createFile = async (destination) => {
-            try {
-                await (0, promises_1.writeFile)(destination, '');
-            }
-            catch (error) {
-                console.error('\n CREATE-FILE-ERROR \n', error + '\n');
-            }
-        };
     }
     get projectStructureSource() {
         return {
@@ -84,6 +51,41 @@ class ScaffolderEngine {
     onSplitStreamError(error) {
         console.error('\n SPLIT-STREAM-ERROR \n', error + '\n');
     }
+    onSplitStreamData = async (input) => {
+        const sanitizedInput = this.sanitizeInput(input);
+        this.currentPathSegments = this.currentPathSegments.slice(0, sanitizedInput.depth);
+        this.currentPathSegments.push(sanitizedInput.path);
+        this.fsOperationQueue.push({
+            type: this.isFile(sanitizedInput.path) ? 'file' : 'directory',
+            path: this.writeDestination
+        });
+    };
+    executeFsOperations = async (operations) => {
+        for (let operation of operations) {
+            if (operation.type === 'directory') {
+                await this.createDirectory(operation.path);
+            }
+            else {
+                await this.createFile(operation.path);
+            }
+        }
+    };
+    createDirectory = async (destination) => {
+        try {
+            await (0, promises_1.mkdir)(destination, { recursive: true });
+        }
+        catch (error) {
+            console.error('\n CREATE-DIRECTORY-ERROR \n', error + '\n');
+        }
+    };
+    createFile = async (destination) => {
+        try {
+            await (0, promises_1.writeFile)(destination, '');
+        }
+        catch (error) {
+            console.error('\n CREATE-FILE-ERROR \n', error + '\n');
+        }
+    };
     run() {
         const stream = this.readStream.pipe(this.splitStream);
         stream.on('close', () => {

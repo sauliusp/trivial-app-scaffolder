@@ -3,25 +3,37 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "nodemonConfig": {
     "execMap": {
-      "ts": "ts-node --files"
+      "ts": "ts-node --esm --files"
     }
   },
+  "bin": {
+    "scaffold-app": "./dist/cli.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && npm run post-build",
+    "post-build": "replace '#!/usr/bin/env ts-node' '#!/usr/bin/env node' dist/cli.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.10",
     "split2": "^4.2.0",
     "through2": "^4.0.2"
   },
   "devDependencies": {
+    "@commander-js/extra-typings": "^11.0.0",
+    "@tsconfig/node-lts": "^18.12.3",
+    "@types/inquirer": "^9.0.3",
     "@types/node": "^20.4.9",
     "@types/split2": "^4.2.0",
     "nodemon": "^3.0.1",
+    "replace": "^1.2.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }
