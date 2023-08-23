@@ -1,23 +1,18 @@
 #!/usr/bin/env ts-node
+import { join } from 'path';
 
 import inquirer from 'inquirer';
 
-import { DirectoryStructureType } from "./types/DirectoryStructureType.js";
+import { DirectoryConfigFactory } from './engine/config.js';
+import { DirectoryEngine } from './engine/engine.js';
+import { promptQuestions } from './inquirer/questions.js';
+import { PromptAnswerMap } from './types/PromptAnswerMap.js';
 
-  const run = async () => {
-    try {
-      const answers = await inquirer.prompt([
-        {
-          type: 'list',
-          name: 'directoryStructure',
-          message: 'What type of directory structure do you want?',
-          choices: Object.values(DirectoryStructureType),
-        },
-      ])
+inquirer.prompt(promptQuestions)
+  .then((result: PromptAnswerMap) => {
+    const directoryStructureConfig = new DirectoryConfigFactory(result.directoryStructure);
+    const engine = new DirectoryEngine(directoryStructureConfig.path, join(__dirname, result.projectName));
 
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  run()
+    engine.run();
+  })
+  .catch((error: Error) => console.error(error));

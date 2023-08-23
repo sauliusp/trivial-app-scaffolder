@@ -8,16 +8,12 @@ import { FsOperation } from "../types/FsOperation.js";
 import { SanitizedInput } from "../types/SanitizedInput.js";
 import { DirectoryStructureConfig } from "../types/DirectoryStructureConfig.js";
 
-export class ScaffolderEngine {
+export class DirectoryEngine {
     private currentPathSegments: string[] = [];
 
     private fsOperationQueue: FsOperation[] = [];
 
     constructor(private structurePath: DirectoryStructureConfig['path'], private projectDestination: string) {}
-
-    private get currentDepth(): number {
-        return this.currentPathSegments.length;
-    }
 
     private get writeDestination(): string {
         return join(this.projectDestination, ...this.currentPathSegments);
