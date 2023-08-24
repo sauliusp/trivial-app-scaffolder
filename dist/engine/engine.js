@@ -2,7 +2,7 @@ import { createReadStream } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { join, extname } from "path";
 import split2 from "split2";
-export class ScaffolderEngine {
+export class DirectoryEngine {
     structurePath;
     projectDestination;
     currentPathSegments = [];
@@ -10,9 +10,6 @@ export class ScaffolderEngine {
     constructor(structurePath, projectDestination) {
         this.structurePath = structurePath;
         this.projectDestination = projectDestination;
-    }
-    get currentDepth() {
-        return this.currentPathSegments.length;
     }
     get writeDestination() {
         return join(this.projectDestination, ...this.currentPathSegments);

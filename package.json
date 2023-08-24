@@ -12,10 +12,18 @@
   "bin": {
     "scaffold-app": "./dist/cli.js"
   },
+  "lint-staged": {
+    "*.ts": [
+        "eslint --fix",
+        "prettier --write"
+    ]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "validate": "lint-staged",
     "build": "tsc && npm run post-build",
-    "post-build": "replace '#!/usr/bin/env ts-node' '#!/usr/bin/env node' dist/cli.js"
+    "post-build": "replace '#!/usr/bin/env ts-node' '#!/usr/bin/env node' dist/cli.js",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -32,9 +40,18 @@
     "@types/inquirer": "^9.0.3",
     "@types/node": "^20.4.9",
     "@types/split2": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "lint-staged": "^14.0.1",
     "nodemon": "^3.0.1",
+    "prettier": "^3.0.2",
     "replace": "^1.2.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "husky": "^8.0.0"
   }
 }

@@ -1,19 +1,13 @@
 #!/usr/bin/env node
+import { join } from 'path';
 import inquirer from 'inquirer';
-import { DirectoryStructureType } from "./types/DirectoryStructureType.js";
-const run = async () => {
-    try {
-        const answers = await inquirer.prompt([
-            {
-                type: 'list',
-                name: 'directoryStructure',
-                message: 'What type of directory structure do you want?',
-                choices: Object.values(DirectoryStructureType),
-            },
-        ]);
-    }
-    catch (error) {
-        console.error(error);
-    }
-};
-run();
+import { DirectoryConfigFactory } from './engine/config.js';
+import { DirectoryEngine } from './engine/engine.js';
+import { promptQuestions } from './inquirer/questions.js';
+inquirer.prompt(promptQuestions)
+    .then((result) => {
+    const directoryStructureConfig = new DirectoryConfigFactory(result.directoryStructure);
+    const engine = new DirectoryEngine(directoryStructureConfig.path, join(process.cwd(), result.projectName));
+    engine.run();
+})
+    .catch((error) => console.error(error));

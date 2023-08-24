@@ -1,7 +1,7 @@
-import { DirectoryStructureType } from "./DirectoryStructureType.js";
+import { DirectoryStructureType } from './DirectoryStructureType.js';
 
 export interface DirectoryStructureConfig {
-    type: DirectoryStructureType,
-    readme: string,
-    path: string,
+  type: DirectoryStructureType;
+  readme: string;
+  path: string;
 }

@@ -8,10 +8,16 @@ import { DirectoryEngine } from './engine/engine.js';
 import { promptQuestions } from './inquirer/questions.js';
 import { PromptAnswerMap } from './types/PromptAnswerMap.js';
 
-inquirer.prompt(promptQuestions)
+inquirer
+  .prompt(promptQuestions)
   .then((result: PromptAnswerMap) => {
-    const directoryStructureConfig = new DirectoryConfigFactory(result.directoryStructure);
-    const engine = new DirectoryEngine(directoryStructureConfig.path, join(__dirname, result.projectName));
+    const directoryStructureConfig = new DirectoryConfigFactory(
+      result.directoryStructure
+    );
+    const engine = new DirectoryEngine(
+      directoryStructureConfig.path,
+      join(process.cwd(), result.projectName)
+    );
 
     engine.run();
   })

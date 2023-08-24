@@ -1,4 +1,6 @@
 import { join } from "path";
+import { getDirname } from "../utils/path_utils.js";
+const __dirname = getDirname(import.meta.url);
 export class DirectoryConfigFactory {
     structureType;
     constructor(structureType) {

@@ -1,6 +1,6 @@
-import { DirectoryStructureType } from "./DirectoryStructureType.js";
+import { DirectoryStructureType } from './DirectoryStructureType.js';
 
 export interface PromptAnswerMap {
-    projectName: string,
-    directoryStructure: DirectoryStructureType    
+  projectName: string;
+  directoryStructure: DirectoryStructureType;
 }
